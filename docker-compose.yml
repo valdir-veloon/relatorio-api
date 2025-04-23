@@ -1,0 +1,8 @@
+services:
+  relatorio:
+    build: .
+    container_name: relatorio-api
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: python app.py
