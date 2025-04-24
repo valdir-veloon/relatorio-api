@@ -19,9 +19,10 @@ status_mapping = {
     'pendingInstitution': 'Pendente Instituição'
 }
 
-FILTRO_MES = 4  # Mês de abril (4) para filtrar os dados
 PAGE_SIZE = 1500  # Número de itens por página
-MAX_ITEMS = 1800  # Limite de segurança para não processar infinitamente
+MAX_ITEMS = 1800  # Limite de segurança
+STARTDATE = "2025-04-01"  # Data de início para a coleta
+ENDDATE = "2025-04-24"  # Data de fim para a coleta
 
 def gerar_planilha():
 
@@ -37,11 +38,11 @@ def gerar_planilha():
     total_items_processed = 0
     
     print("Iniciando coleta de dados da API...")
-    
+
     # Loop de paginação
     while total_items_processed < MAX_ITEMS:
         # Preparar parâmetros de consulta
-        params = {"limit": PAGE_SIZE}
+        params = {"limit": PAGE_SIZE, "startDate": STARTDATE, "endDate": ENDDATE}
         if last_key:
             params["lastKey"] = last_key
             
@@ -67,11 +68,6 @@ def gerar_planilha():
                     try:
                         dt_utc = datetime.fromisoformat(created_at).replace(tzinfo=ZoneInfo("UTC"))
                         dt_sp = dt_utc.astimezone(ZoneInfo("America/Sao_Paulo"))
-
-                         # Filtrar apenas mês de abril
-                        if dt_sp.month != FILTRO_MES:
-                            continue
-    
                         created_at_br = dt_sp.strftime('%d/%m/%Y')
                     except Exception:
                         continue
