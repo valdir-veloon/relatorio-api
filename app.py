@@ -20,6 +20,8 @@ status_mapping = {
 }
 
 FILTRO_MES = 4  # Mês de abril (4) para filtrar os dados
+PAGE_SIZE = 1500  # Número de itens por página
+MAX_ITEMS = 1800  # Limite de segurança para não processar infinitamente
 
 def gerar_planilha():
 
@@ -29,9 +31,6 @@ def gerar_planilha():
         "Authorization": f"Bearer {api_token}",
         "Content-Type": "application/json"
     }
-
-    page_size = 1400  # Número de itens por página
-    max_items = 1400  # Limite de segurança para não processar infinitamente
     
     all_data = []
     last_key = None
@@ -40,9 +39,9 @@ def gerar_planilha():
     print("Iniciando coleta de dados da API...")
     
     # Loop de paginação
-    while total_items_processed < max_items:
+    while total_items_processed < MAX_ITEMS:
         # Preparar parâmetros de consulta
-        params = {"limit": page_size}
+        params = {"limit": PAGE_SIZE}
         if last_key:
             params["lastKey"] = last_key
             
