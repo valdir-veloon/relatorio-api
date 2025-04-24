@@ -1,0 +1,51 @@
+
+# Relatório de propostas API Cartos
+
+Esse projeto gera uma planilha atualizada de propostas buscando na api da Cartos.
+
+Esse projeto roda em Docker, bastando realizar a parametrização do token em um arquivo .env, 
+e caso precise atualizando os parâmetros de busca no arquivo app.py, tanto para o mês desejado 
+quanto para o total de itens desejados.
+
+
+## Variáveis de Ambiente
+
+Para rodar esse projeto, você vai precisar adicionar a seguinte variável de ambiente no seu .env
+
+`API_TOKEN`
+
+
+
+## Rodando localmente
+
+- Clone o projeto
+
+```bash
+  https://github.com/valdir-veloon/relatorio-api
+```
+
+- Entre no diretório do projeto
+
+```bash
+  cd relatorio-api
+```
+
+- Renomeie a variável .env.example para .env e preencha com o token
+
+- Configure os parâmetros em app.py e rode o comando abaixo e uma nova planilha será gerada na sua máquina
+
+```bash
+  docker compose up --build
+```
+
+
+
+## Stack utilizada
+
+**Back-end:** Python com Docker
+
+
+## Autor
+
+- [@Valdir Silva](https://github.com/valdir-veloon)
+
