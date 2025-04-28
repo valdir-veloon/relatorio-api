@@ -19,10 +19,10 @@ status_mapping = {
     'pendingInstitution': 'Pendente Instituição'
 }
 
-PAGE_SIZE = 1500  # Número de itens por página
-MAX_ITEMS = 1800  # Limite de segurança
+PAGE_SIZE = 2000  # Número de itens por página
+MAX_ITEMS = 2000  # Limite de segurança
 STARTDATE = "2025-04-01"  # Data de início para a coleta
-ENDDATE = "2025-04-24"  # Data de fim para a coleta
+ENDDATE = "2025-04-30"  # Data de fim para a coleta
 
 def gerar_planilha():
 
@@ -137,7 +137,7 @@ def gerar_planilha():
             # Criar um DataFrame para o resumo
             summary_df = pd.DataFrame([
                 ['Total de Propostas', len(all_data)],
-                ['Total Reservas', f'R$ {total_reservation_amount:.2f}'],
+                ['Total Pago', f'R$ {total_reservation_amount:.2f}'],
                 ['Total Esteira', f'R$ {total_esteira:.2f}']
             ], columns=['Descrição', 'Valor'])
             
