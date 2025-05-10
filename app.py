@@ -14,15 +14,15 @@ status_mapping = {
     'awaitingPaymentConfirmation': 'Pagamento Confirmado',
     'customerRefused': 'Recusado Cliente',
     'pendingCustomer': 'Pendente Cliente',
-    'canceled': 'Cancelada',
+    'canceled': 'Cancelada',    
     'institutionRefused': 'Recusado Instituição',
     'pendingInstitution': 'Pendente Instituição'
 }
 
 PAGE_SIZE = 2000  # Número de itens por página
 MAX_ITEMS = 2000  # Limite de segurança
-STARTDATE = "2025-04-01"  # Data de início para a coleta
-ENDDATE = "2025-04-30"  # Data de fim para a coleta
+STARTDATE = "2025-05-01"  # Data de início para a coleta
+ENDDATE = "2025-05-31"  # Data de fim para a coleta
 
 def gerar_planilha():
 
@@ -73,11 +73,12 @@ def gerar_planilha():
                         continue
                     
                     original_status = item.get('status', 'N/A')
-                    translated_status = status_mapping.get(original_status, original_status)
+                    translated_status = status_mapping.get(original_status, 'não encontrado')
                     
                     # Verificar se customer e reservation existem antes de acessar
                     cpf = item.get('customer', {}).get('cpf', 'N/A')
                     reservation_amount = item.get('reservation', {}).get('reservationAmount', 0)
+                    reservation_id = item.get('reservation', {}).get('reservationId', 'N/A')
                     
                     all_data.append({
                         'CPF': cpf,
@@ -85,6 +86,7 @@ def gerar_planilha():
                         'Status': translated_status,
                         'Valor da Reserva': reservation_amount,
                         'Status_Original': original_status,
+                        'Reservation ID': reservation_id,
                         'Data': created_at_br,
                     })
                 except Exception as e:
@@ -117,64 +119,18 @@ def gerar_planilha():
     # Criar DataFrame com os dados coletados, excluindo a coluna de controle
     df = pd.DataFrame(all_data)
     df = df.drop('Status_Original', axis=1)  # Remove a coluna de status original do DataFrame
-    
-    # Calcular os totais com base nas regras de status
-    total_reservation_amount = sum(
-        item['Valor da Reserva'] 
-        for item in all_data 
-        if item['Status_Original'] in ['awaitingPaymentConfirmation', 'pendingCustomer']
-    )
-
-    total_esteira = sum(
-        item['Valor da Reserva'] 
-        for item in all_data 
-        if item['Status_Original'] in ['awaitingPaymentConfirmation', 'pendingCustomer', 'pendingInstitution']
-    )
 
     # Criar o arquivo Excel
     try:
         with pd.ExcelWriter('planilha_propostas.xlsx', engine='xlsxwriter') as writer:
-            # Criar um DataFrame para o resumo
-            summary_df = pd.DataFrame([
-                ['Total de Propostas', len(all_data)],
-                ['Total Pago', f'R$ {total_reservation_amount:.2f}'],
-                ['Total Esteira', f'R$ {total_esteira:.2f}']
-            ], columns=['Descrição', 'Valor'])
             
-            # Adicionar o resumo na planilha
-            summary_df.to_excel(writer, sheet_name='Propostas', index=False, startrow=0)
-            
-            # Adicionar uma linha em branco
-            writer.sheets['Propostas'].write_row(4, 0, [''])
             
             # Adicionar os dados principais
-            df.to_excel(writer, sheet_name='Propostas', index=False, startrow=6)
+            df.to_excel(writer, sheet_name='Propostas', index=False, startrow=0)
             
             # Formatar a planilha
             workbook = writer.book
             worksheet = writer.sheets['Propostas']
-            
-            # Formatar cabeçalhos
-            header_format = workbook.add_format({
-                'bold': True,
-                'bg_color': '#D9E1F2',
-                'border': 1
-            })
-            
-            # Formatar células de resumo
-            summary_format = workbook.add_format({
-                'bold': True,
-                'font_size': 12
-            })
-            
-            # Aplicar formato ao resumo
-            for row in range(3):
-                worksheet.write(row, 0, summary_df.iloc[row, 0], summary_format)
-                worksheet.write(row, 1, summary_df.iloc[row, 1], summary_format)
-            
-            # Aplicar formato ao cabeçalho
-            for col_num, value in enumerate(df.columns.values):
-                worksheet.write(6, col_num, value, header_format)
                 
             # Ajustar largura das colunas
             for i, col in enumerate(df.columns):
