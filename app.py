@@ -16,7 +16,8 @@ status_mapping = {
     'pendingCustomer': 'Pendente Cliente',
     'canceled': 'Cancelada',    
     'institutionRefused': 'Recusado Instituição',
-    'pendingInstitution': 'Pendente Instituição'
+    'pendingInstitution': 'Pendente Instituição',
+    'unblockingError': 'Erro de Desbloqueio',
 }
 
 PAGE_SIZE = 2000  # Número de itens por página
@@ -129,7 +130,6 @@ def gerar_planilha():
             df.to_excel(writer, sheet_name='Propostas', index=False, startrow=0)
             
             # Formatar a planilha
-            workbook = writer.book
             worksheet = writer.sheets['Propostas']
                 
             # Ajustar largura das colunas
