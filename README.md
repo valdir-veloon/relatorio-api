@@ -32,9 +32,9 @@ Para rodar esse projeto, você vai precisar adicionar a seguinte variável de am
   cd relatorio-api
 ```
 
-- Renomeie a variável .env.example para .env e preencha com o token
+- Renomeie as variáveis .env.example para .env e preencha com os dados de acesso
 
-- Configure os parâmetros em app.py e rode o comando abaixo e uma nova planilha será gerada na sua máquina
+- Configure os parâmetros em app.py de data e limites, e rode o comando abaixo e uma nova planilha será gerada na sua máquina
 
 ```bash
   docker compose up --build
@@ -50,4 +50,3 @@ Para rodar esse projeto, você vai precisar adicionar a seguinte variável de am
 ## Autor
 
 - [@Valdir Silva](https://github.com/valdir-veloon)
-

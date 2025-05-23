@@ -25,12 +25,39 @@ MAX_ITEMS = 2000  # Limite de segurança
 STARTDATE = "2025-05-01"  # Data de início para a coleta
 ENDDATE = "2025-05-31"  # Data de fim para a coleta
 
+def get_api_token():
+    """
+    Função para obter o token da API.
+    """
+    try:
+        base_url = "https://api.tmjbeneficios.com.br/no-auth/authentication/login"
+        headers = {
+            "Content-Type": "application/json"
+        }
+        data = {
+            "email": os.getenv("API_EMAIL"),
+            "senha": os.getenv("API_PASSWORD")   
+        }
+
+        response = requests.post(base_url, headers=headers, json=data)
+        
+        if not response.ok:
+            print('Erro ao chamar a API:', response.text)
+            return None
+        
+        result = response.json()
+        return result.get("accessToken")
+
+    except Exception as e:
+        print(f"Erro ao obter o token da API: {str(e)}")
+        return None
+
 def gerar_planilha():
 
-     # Configuração da API
+    # Configuração da API
     base_url = "https://api.tmjbeneficios.com.br/propostas/fgts/listar"
     headers = {
-        "Authorization": f"Bearer {api_token}",
+        "Authorization": f"Bearer {get_api_token()}",
         "Content-Type": "application/json"
     }
     
