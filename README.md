@@ -3,19 +3,18 @@
 
 Esse projeto gera uma planilha atualizada de propostas buscando na api da Cartos.
 
-Esse projeto roda em Docker, bastando realizar a parametrização do token em um arquivo .env, 
-e caso precise atualizar os parâmetros faça no arquivo app.py, tanto para o mês desejado 
-quanto para o total de itens desejados.
+Esse projeto roda em Docker, bastando realizar a parametrização dos dados em um arquivo .env,
+que tem um .env.example para saber quais são esses dados, e caso precise atualizar os parâmetros de busca, 
+os faça no arquivo app.py, tanto para o mês desejado quanto para o total de itens desejados.
 
-Hoje o mês padrão é o de abril e caso precise alterar mude as variáveis STARTDATE e ENDDATE.
-
+Hoje o mês padrão é o de maio e caso precise alterar mude as variáveis STARTDATE e ENDDATE.
 
 ## Variáveis de Ambiente
 
 Para rodar esse projeto, você vai precisar adicionar a seguinte variável de ambiente no seu .env
 
-`API_TOKEN`
-
+  `API_EMAIL`
+  `API_PASSWORD`
 
 
 ## Rodando localmente
@@ -39,8 +38,6 @@ Para rodar esse projeto, você vai precisar adicionar a seguinte variável de am
 ```bash
   docker compose up --build
 ```
-
-
 
 ## Stack utilizada
 
